@@ -9,11 +9,15 @@ class RensekiMenu extends StatefulWidget {
     required this.firstData,
     required this.secondData,
     required this.isEdit,
+    required this.updateList,
+    this.isSecondary = false,
   }) : super(key: key);
 
   List firstData;
   List secondData;
   bool isEdit;
+  Function updateList;
+  bool isSecondary ;
 
   @override
   State<RensekiMenu> createState() => _RensekiMenuState();
@@ -64,17 +68,20 @@ class _RensekiMenuState extends State<RensekiMenu> {
                   top: 1,
                   left: 0,
                   child: GestureDetector(
-                    // onTap: moveBetweenList,
+                    onTap: (){
+                      widget.updateList(menu, widget.isSecondary);
+                    },
                     child: SizedBox(
                       width: 20,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: ColorConst.rensekiRed,
+                          // color: ColorConst.rensekiRed,
+                          color: (!widget.isSecondary) ? ColorConst.rensekiRed : ColorConst.greenColor,
                           shape: BoxShape.circle,
                         ),
                         child: Center(
                           child: Icon(
-                            Icons.remove,
+                            (!widget.isSecondary) ? Icons.remove : Icons.add,
                             color: ColorConst.lightWhiteColor,
                             size: 20,
                           ),
@@ -89,6 +96,7 @@ class _RensekiMenuState extends State<RensekiMenu> {
       ],
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

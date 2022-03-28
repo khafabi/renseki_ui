@@ -27,6 +27,20 @@ class _MenuScreenState extends State<MenuScreen> {
 
   final menuDataDua = <Menu>[];
 
+  void updateList(Menu menu, bool isSecondary) {
+    if (isSecondary) {
+      setState(() {
+        menuDataSatu.add(menu);
+        menuDataDua.remove(menu);
+      });
+    } else {
+      setState(() {
+        menuDataDua.add(menu);
+        menuDataSatu.remove(menu);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -70,6 +84,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -115,11 +130,21 @@ class _MenuScreenState extends State<MenuScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Menu Favorit',
-                              style: AppFonts.verySmall(
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Menu Favorit',
+                                  style: AppFonts.verySmall(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (isEdit)
+                                  Text(
+                                    'Maksimal 8 menu favorit',
+                                    style: AppFonts.verySmall(),
+                                  ),
+                              ],
                             ),
                             ElevatedButton(
                               onPressed: () {
@@ -134,7 +159,9 @@ class _MenuScreenState extends State<MenuScreen> {
                                 primary: (!isEdit)
                                     ? ColorConst.rensekiBlue1
                                     : ColorConst.lightWhiteColor,
-                                onPrimary: (isEdit) ? ColorConst.rensekiBlue1 : ColorConst.lightWhiteColor,
+                                onPrimary: (isEdit)
+                                    ? ColorConst.rensekiBlue1
+                                    : ColorConst.lightWhiteColor,
                                 textStyle: AppFonts.verySmall(),
                               ),
                             ),
@@ -144,6 +171,8 @@ class _MenuScreenState extends State<MenuScreen> {
                       RensekiMenu(
                         firstData: menuDataSatu,
                         isEdit: isEdit,
+                        secondData: menuDataDua,
+                        updateList: updateList,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -162,6 +191,9 @@ class _MenuScreenState extends State<MenuScreen> {
                       RensekiMenu(
                         firstData: menuDataDua,
                         isEdit: isEdit,
+                        secondData: menuDataSatu,
+                        updateList: updateList,
+                        isSecondary: true,
                       ),
                     ],
                   ),
